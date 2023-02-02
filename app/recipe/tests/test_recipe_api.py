@@ -21,7 +21,7 @@ from recipe.serializers import (
 RECIPES_URL = reverse('recipe:recipe-list')
 
 
-def detail_url(reciep_id):
+def detail_url(recipe_id):
     """Create and return a recipe detail URL."""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
@@ -49,12 +49,12 @@ class PublicRecipeAPITests(TestCase):
 
     def test_auth_required(self):
         """Test auth is required to call API."""
-        res = self.client.get(RECIPIS_URL)
+        res = self.client.get(RECIPES_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeAPITests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
@@ -63,10 +63,10 @@ class PrivateRecipeAPITests(TestCase):
             'user@example.com',
             'testpass123',
         )
-        self.client.force_authenticated(self.user)
+        self.client.force_authenticate(self.user)
 
-    def test_retrive_recipes(self):
-        """Test retrieving a list of recipe."""
+    def test_retrieve_recipes(self):
+        """Test retrieving a list of recipes."""
         create_recipe(user=self.user)
         create_recipe(user=self.user)
 
